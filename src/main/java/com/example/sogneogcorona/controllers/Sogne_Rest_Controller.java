@@ -1,14 +1,17 @@
 package com.example.sogneogcorona.controllers;
 
 
+import com.example.sogneogcorona.model.Kommune;
 import com.example.sogneogcorona.model.Sogne;
 import com.example.sogneogcorona.repositories.SogneRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,37 +26,48 @@ public class Sogne_Rest_Controller {
     }
 
     @GetMapping("/sogne")
-    public ResponseEntity<List<Sogne>> findAll(){
+    public ResponseEntity<List<Sogne>> findAll() {
         //findAll recipes and return
-        List<Sogne> sogneList =new ArrayList<>();
-        for (Sogne sogne:sogneRepo.findAll()){
+        List<Sogne> sogneList = new ArrayList<>();
+        for (Sogne sogne : sogneRepo.findAll()) {
             sogneList.add(sogne);
         }
         return ResponseEntity.status(HttpStatus.OK).body(sogneList);
     }
 
     @GetMapping("/sogne/{id}")
-    public ResponseEntity<Optional<Sogne>> findById(@PathVariable int id)
-    {
+    public ResponseEntity<Optional<Sogne>> findById(@PathVariable int id) {
         Optional<Sogne> optionalSogne = sogneRepo.findById(id);
-        if (optionalSogne.isPresent()){
+        if (optionalSogne.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK).body(optionalSogne);
-        }
-        else{
+        } else {
             //Not found
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(optionalSogne);
         }
     }
 
-    @PutMapping("/car/{id}")
+    @PutMapping("/sogne/{id}")
     public ResponseEntity<String> update(@PathVariable("id") int id, @RequestBody Sogne sogne) {
         Optional<Sogne> optionalSogne = sogneRepo.findById(id);
         if (!optionalSogne.isPresent()) {
-            //id findes ikke
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{'msg' : 'car " + id + " not found'}");
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{'msg' : 'sogne " + id + " not found'}");
         }
         sogneRepo.save(sogne);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("{ 'msg' : 'updated' }");
 
     }
+
+    @DeleteMapping("/sogne/{id}")
+    public ResponseEntity<String> delete(@PathVariable("id") int id) {
+        Optional<Sogne> optionalSogne = sogneRepo.findById(id);
+        if (!optionalSogne.isPresent()) {
+
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{'msg' : 'sogne " + id + " not found'}");
+        }
+        sogneRepo.deleteById(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("{ 'msg' : 'deleted' }");
+    }
+
+
 }

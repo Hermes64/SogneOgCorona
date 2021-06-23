@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sogne Liste</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <style>
+        body{
+            font-size: 17px;
+            font-family: arial;
+            background: white;
+            line-height: 1.5em;
+        }
+        header{
+            background:#333;
+            color:white;
+            padding:20px;
+            text-align: center;
+            border-bottom: 4px #000 solid;
+            margin-bottom: 10px;
+        }
+        #container{
+            width:90%;
+            margin:auto;
+            padding:10px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>SogneListe</h1>
+</header>
+
+
+<div class ="container">
+    <div class="row justify-content-center">
+        <br>
+        <fieldset style="width: 100%" >
+            <table style="width:80%">
+                <tr>
+                    <th>SognId</th>
+                    <br>
+                    <th>Sognkode</th>
+                    <br>
+                    <th>Navn</th>
+                    <th>Kommune</th>
+                    <th>Smittetryk</th>
+                    <th>Nedlukningstartdato</th>
+                    <th>Lukket</th>
+                </tr>
+                <tr th:each="sogne : ${sogneSet}">
+                    <td th:text="${sogne.id}"></td>
+                    <td th:text="${sogne.sognekode}"></td>
+                    <td th:text="${sogne.navn}"></td>
+                    <td th:text="${sogne.kommune}"></td>
+                    <td th:text="${sogne.smittetryk}"></td>
+                    <td th:text="${sogne.nedlukningStart}"></td>
+
+                </tr>
+            </table>
+            <br>
+            <form name="opret" action="/createSogn" method=get>
+                <button class="button" type="submit" >opret</button>
+            </form>
+            <br>
+            <form name="slet" action="/delete" method=get>
+                <button class="button" type="submit" >delete</button>
+            </form>
+            <br>
+            <form name="opdater" action="/update" method=get>
+                <button class="button" type="submit" >opdater</button>
+            </form>
+            <br>
+        </fieldset>
+    </div>
+
+</div>
+</body>
+</html>
